@@ -1,6 +1,6 @@
 package input;
 
-public class Credentials {
+public final class Credentials {
     private String name;
     private String password;
     private String accountType;
@@ -11,7 +11,7 @@ public class Credentials {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -19,7 +19,7 @@ public class Credentials {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -27,7 +27,7 @@ public class Credentials {
         return accountType;
     }
 
-    public void setAccountType(String accountType) {
+    public void setAccountType(final String accountType) {
         this.accountType = accountType;
     }
 
@@ -35,7 +35,7 @@ public class Credentials {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(final String country) {
         this.country = country;
     }
 
@@ -43,18 +43,18 @@ public class Credentials {
         return balance;
     }
 
-    public void setBalance(Integer balance) {
+    public void setBalance(final Integer balance) {
         this.balance = balance;
     }
 
     @Override
     public String toString() {
-        return "Credentials{" +
-                "name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", accountType='" + accountType + '\'' +
-                ", country='" + country + '\'' +
-                ", balance=" + balance +
-                '}';
+        return "Credentials{"
+                + "name='" + name + '\''
+                + ", password='" + password + '\''
+                + ", accountType='" + accountType + '\''
+                + ", country='" + country + '\''
+                + ", balance=" + balance
+                + '}';
     }
 }

@@ -5,58 +5,122 @@ import app.pages.PageHierarchy;
 import database.Database;
 import input.FilterInput;
 import input.Input;
-
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.logging.Filter;
 
-public class App {
-    private static App app = new App();
-    private Page rootAuth;
-    private Page rootUnauth;
+public final class App {
+    private static final App APP = new App();
     private User currUser;
     private Page currPage;
     private ArrayList<Movie> availableMovies;
 
-    private App(){}
+    private App() { }
 
-    public void start(Input input) {
-        rootAuth = PageHierarchy.getPage("homepageAuth");
-        rootUnauth = PageHierarchy.getPage("homepageUnauth");
+    /**
+     * Initializes this app's parameters
+     * @param input The json input
+     */
+    public void start(final Input input) {
         Database.getDatabase().updateDatabase(input);
+
         currUser = null;
-        currPage = rootUnauth;
-        //System.out.println(currPage);
+        currPage = PageHierarchy.getPage("homepageUnauth");
+
         availableMovies = new ArrayList<>();
     }
 
+    /**
+     * Updates the available movies, choosing from the Database only the movies available in the current user's country
+     */
+    public void updateAvailableMovies() {
+        availableMovies = new ArrayList<>();
+
+        for (Movie movie : Database.getDatabase().getMovies()) {
+            if (movie.getCountriesBanned().contains(currUser.getCredentials().getCountry())) {
+                continue;
+            }
+
+            availableMovies.add(movie);
+        }
+    }
+
+    /**
+     * Updates the available movies, choosing from the Database only the movies available in the current user's country and starts with the given string
+     * @param searchString The string used for searching movies
+     */
+    public void updateAvailableMovies(final String searchString) {
+        if (availableMovies == null) {
+            availableMovies = new ArrayList<>();
+        }
+
+        ArrayList<Movie> helper = new ArrayList<>();
+
+        for (Movie movie : availableMovies) {
+            if (movie.getName().startsWith(searchString)) {
+                helper.add(movie);
+            }
+        }
+
+        availableMovies = helper;
+    }
+
+    /**
+     * Updates the available movies, choosing from the Database only the movies available in the current user's country and are corresponding to the given filter
+     * @param filterInput The filter for choosing the movies
+     */
+    public void updateAvailableMovies(final FilterInput filterInput) {
+        if (availableMovies == null) {
+            availableMovies = new ArrayList<>();
+        }
+
+        ArrayList<Movie> helper = new ArrayList<>();
+
+        for (Movie movie : availableMovies) {
+            if (movie.contains(filterInput.getContains())) {
+                helper.add(movie);
+            }
+        }
+
+        if (filterInput.getSort() == null) {
+            availableMovies = helper;
+            return;
+        }
+
+        helper.sort((o1, o2) -> {
+            if (filterInput.getSort().getDuration() == null) {
+                if (filterInput.getSort().getRating().equals("decreasing")) {
+                    return (int) ((o2.calculateRating() - o1.calculateRating()));
+                } else {
+                    return (int) ((o1.calculateRating() - o2.calculateRating()));
+                }
+            }
+
+            if (o1.getDuration() - o2.getDuration() == 0) {
+                if (filterInput.getSort().getRating().equals("decreasing")) {
+                    return (int) ((o2.calculateRating() - o1.calculateRating()));
+                } else {
+                    return (int) ((o1.calculateRating() - o2.calculateRating()));
+                }
+            }
+
+            if (filterInput.getSort().getDuration().equals("decreasing")) {
+                return o2.getDuration() - o1.getDuration();
+            } else {
+                return o1.getDuration() - o2.getDuration();
+            }
+
+        });
+        availableMovies = helper;
+    }
+
     public static App getApp() {
-        return app;
-    }
-
-    public Page getRootAuth() {
-        return rootAuth;
-    }
-
-    public void setRootAuth(Page rootAuth) {
-        this.rootAuth = rootAuth;
-    }
-
-    public Page getRootUnauth() {
-        return rootUnauth;
-    }
-
-    public void setRootUnauth(Page rootUnauth) {
-        this.rootUnauth = rootUnauth;
+        return APP;
     }
 
     public User getCurrUser() {
         return currUser;
     }
 
-    public void setCurrUser(User currUser) {
+    public void setCurrUser(final User currUser) {
         this.currUser = currUser;
     }
 
@@ -64,7 +128,7 @@ public class App {
         return currPage;
     }
 
-    public void setCurrPage(Page currPage) {
+    public void setCurrPage(final Page currPage) {
         this.currPage = currPage;
     }
 
@@ -75,86 +139,4 @@ public class App {
     public void setAvailableMovies(ArrayList<Movie> availableMovies) {
         this.availableMovies = availableMovies;
     }
-
-    public void goTo(Page page) {
-//        for(Page child : currPage.getChildren()) {
-//            if(page.equals(child))
-//                currPage = child;
-//        }
-        // return erro, page not found
-    }
-
-    public void updateAvailableMovies() {
-        if(availableMovies == null) {
-            availableMovies = new ArrayList<>();
-        } else {
-            availableMovies.removeAll(availableMovies);
-        }
-
-        for(Movie movie : Database.getDatabase().getMovies()) {
-            if(movie.getCountriesBanned().contains(currUser.getCredentials().getCountry()))
-                continue;
-            availableMovies.add(movie);
-        }
-    }
-
-    public void updateAvailableMovies(String searchString) {
-        if(availableMovies == null)
-            availableMovies = new ArrayList<>();
-
-        ArrayList<Movie> helper = new ArrayList<>();
-        for(Movie movie : availableMovies) {
-            if(movie.getName().startsWith(searchString)) {
-                helper.add(movie);
-            }
-        }
-        availableMovies = helper;
-    }
-
-    public void updateAvailableMovies(FilterInput filterInput) {
-        if(availableMovies == null)
-            availableMovies = new ArrayList<>();
-
-        ArrayList<Movie> helper = new ArrayList<>();
-        for(Movie movie : availableMovies) {
-            if(movie.contains(filterInput.getContains())) {
-                helper.add(movie);
-            }
-        }
-
-        if(filterInput.getSort() == null) {
-            availableMovies = helper;
-            return;
-        }
-
-        helper.sort(new Comparator<Movie>() {
-            @Override
-            public int compare(Movie o1, Movie o2) {
-                if (filterInput.getSort().getDuration() == null) {
-                    if (filterInput.getSort().getRating().equals("decreasing")) {
-                        return (int) ((o2.calculateRating() - o1.calculateRating()) * 100);
-                    } else {
-                        return (int) ((o1.calculateRating() - o2.calculateRating()) * 100);
-                    }
-                }
-
-                if (o1.getDuration() - o2.getDuration() == 0) {
-                    if (filterInput.getSort().getRating().equals("decreasing")) {
-                        return (int) ((o1.calculateRating() - o2.calculateRating()) * 100);
-                    } else {
-                        return (int) ((o2.calculateRating() - o1.calculateRating()) * 100);
-                    }
-                }
-
-                if (filterInput.getSort().getDuration().equals("decreasing")) {
-                    return o1.getDuration() - o2.getDuration();
-                } else {
-                    return o2.getDuration() - o1.getDuration();
-                }
-
-            }
-        });
-        availableMovies = helper;
-    }
-
 }

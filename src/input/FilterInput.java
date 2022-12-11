@@ -1,6 +1,6 @@
 package input;
 
-public class FilterInput {
+public final class FilterInput {
     private SortInput sort;
     private ContainsInput contains;
 
@@ -8,7 +8,7 @@ public class FilterInput {
         return sort;
     }
 
-    public void setSort(SortInput sort) {
+    public void setSort(final SortInput sort) {
         this.sort = sort;
     }
 
@@ -16,15 +16,15 @@ public class FilterInput {
         return contains;
     }
 
-    public void setContains(ContainsInput contains) {
+    public void setContains(final ContainsInput contains) {
         this.contains = contains;
     }
 
     @Override
     public String toString() {
-        return "FilterInput{" +
-                "sort=" + sort +
-                ", contains=" + contains +
-                '}';
+        return "FilterInput{"
+                + "sort=" + sort
+                + ", contains=" + contains
+                + '}';
     }
 }

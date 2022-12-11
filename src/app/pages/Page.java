@@ -1,25 +1,60 @@
 package app.pages;
 
-import app.actions.Action;
-
 import java.util.ArrayList;
 
-public class Page {
+public final class Page {
     private String name;
     private ArrayList<String> children;
     private ArrayList<String> availableActions;
 
-    public Page(String name, ArrayList<String> children, ArrayList<String> availableActions) {
+    Page(final String name, final ArrayList<String> children, final ArrayList<String> availableActions) {
         this.name = name;
         this.children = children;
         this.availableActions = availableActions;
+    }
+
+    /**
+     *
+     * @param page The page being searched for
+     * @return True if the current page has a link (can go) to the searched page, False otherwise
+     */
+    public boolean hasChild(final String page) {
+        if (children == null) {
+            return false;
+        }
+
+        for (String child : children) {
+            if (child.equals(page)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     * @param action The action being searched for
+     * @return True if action can be done on this page, False otherwise
+     */
+    public boolean hasAction(final String action) {
+        if (availableActions == null) {
+            return false;
+        }
+
+        for (String child : availableActions) {
+            if (child.equals(action)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -27,7 +62,7 @@ public class Page {
         return children;
     }
 
-    public void setChildren(ArrayList<String> children) {
+    public void setChildren(final ArrayList<String> children) {
         this.children = children;
     }
 
@@ -35,72 +70,7 @@ public class Page {
         return availableActions;
     }
 
-    public void setAvailableActions(ArrayList<String> availableActions) {
+    public void setAvailableActions(final ArrayList<String> availableActions) {
         this.availableActions = availableActions;
     }
-
-    @Override
-    public String toString() {
-        return "Page{" +
-                "name='" + name + '\'' +
-                ", children=" + children +
-                ", availableActions=" + availableActions +
-                '}';
-    }
-
-    public boolean hasChild(String name) {
-        if(children == null)
-            return false;
-
-        for(String child : children) {
-            if(child.equals(name))
-                return true;
-        }
-        return false;
-    }
-
-    public boolean hasAction(String name) {
-        if(availableActions == null)
-            return false;
-
-        for(String child : availableActions) {
-            if(child.equals(name))
-                return true;
-        }
-        return false;
-    }
 }
-//
-//class HomepageUnlogged extends Page {
-//
-//}
-//
-//class LoginPage extends Page {
-//
-//}
-//
-//class RegisterPage extends Page {
-//
-//}
-//
-//
-//class HomepageLogged extends Page {
-//
-//}
-//
-//class MoviesPage extends Page {
-//
-//}
-//
-//class SeeDetailsPage extends Page {
-//
-//}
-//
-//class UpgradesPage extends Page {
-//
-//}
-//
-//class LogoutPage extends Page {
-//
-//}
-

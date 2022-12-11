@@ -9,21 +9,21 @@ import input.UserInput;
 
 import java.util.ArrayList;
 
-public class Database {
-    public static Database database = new Database();
+public final class Database {
+    public static final  Database DATABASE = new Database();
     private ArrayList<User> users;
     private ArrayList<Movie> movies;
-    private Database() {}
+    private Database() { }
 
     public static Database getDatabase() {
-        return database;
+        return DATABASE;
     }
 
     public ArrayList<User> getUsers() {
         return users;
     }
 
-    public void setUsers(ArrayList<User> users) {
+    public void setUsers(final ArrayList<User> users) {
         this.users = users;
     }
 
@@ -31,43 +31,65 @@ public class Database {
         return movies;
     }
 
-    public void setMovies(ArrayList<Movie> movies) {
+    public void setMovies(final ArrayList<Movie> movies) {
         this.movies = movies;
     }
 
-    public void updateDatabase(Input input) {
+    /**
+     * Updates the database with the given input
+     * @param input The json input
+     */
+    public void updateDatabase(final Input input) {
         this.users = new ArrayList<>();
         this.movies = new ArrayList<>();
 
-        for(UserInput userInput : input.getUsers()) {
+        for (UserInput userInput : input.getUsers()) {
             users.add(new User(userInput));
         }
 
-        for(MovieInput movieInput : input.getMovies()) {
+        for (MovieInput movieInput : input.getMovies()) {
             movies.add(new Movie(movieInput));
         }
     }
 
-    public boolean userExists(String userName) {
-        for(User user : users) {
-            if(user.getCredentials().getName().equals(userName)) {
+    /**
+     *
+     * @param userName The name of the user being searched for
+     * @return True if user exists in the database, false otherwise
+     */
+    public boolean userExists(final String userName) {
+        for (User user : users) {
+            if (user.getCredentials().getName().equals(userName)) {
                 return true;
             }
         }
         return false;
     }
-    public User registerUser (Credentials credentials) {
-        if(userExists(credentials.getName()))
+
+    /**
+     * Registering a new user to database
+     * @param credentials New user's credentials
+     * @return New user's instance, null if this already exists
+     */
+    public User registerUser(final Credentials credentials) {
+        if (userExists(credentials.getName())) {
             return null;
+        }
+
         users.add(new User(credentials));
 
         return loginUser(credentials);
     }
 
-    public User loginUser (Credentials credentials) {
-        for(User user : users) {
-            if(user.getCredentials().getName().equals(credentials.getName())) {
-                if(user.getCredentials().getPassword().equals(credentials.getPassword())) {
+    /**
+     * Logging in an existent user
+     * @param credentials Logging user's credentials
+     * @return The logging user's instance, null if it does not exist, or the password is incorrect
+     */
+    public User loginUser(final Credentials credentials) {
+        for (User user : users) {
+            if (user.getCredentials().getName().equals(credentials.getName())) {
+                if (user.getCredentials().getPassword().equals(credentials.getPassword())) {
                     return user;
                 }
                 return null;

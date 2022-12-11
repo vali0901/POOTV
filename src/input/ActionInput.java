@@ -1,6 +1,6 @@
 package input;
 
-public class ActionInput {
+public final class ActionInput {
     private String type;
     private String page;
     private String movie;
@@ -15,7 +15,7 @@ public class ActionInput {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
@@ -23,7 +23,7 @@ public class ActionInput {
         return page;
     }
 
-    public void setPage(String page) {
+    public void setPage(final String page) {
         this.page = page;
     }
 
@@ -31,7 +31,7 @@ public class ActionInput {
         return movie;
     }
 
-    public void setMovie(String movie) {
+    public void setMovie(final String movie) {
         this.movie = movie;
     }
 
@@ -39,7 +39,7 @@ public class ActionInput {
         return feature;
     }
 
-    public void setFeature(String feature) {
+    public void setFeature(final String feature) {
         this.feature = feature;
     }
 
@@ -47,7 +47,7 @@ public class ActionInput {
         return credentials;
     }
 
-    public void setCredentials(Credentials credentials) {
+    public void setCredentials(final Credentials credentials) {
         this.credentials = credentials;
     }
 
@@ -55,7 +55,7 @@ public class ActionInput {
         return startsWith;
     }
 
-    public void setStartsWith(String startsWith) {
+    public void setStartsWith(final String startsWith) {
         this.startsWith = startsWith;
     }
 
@@ -63,7 +63,7 @@ public class ActionInput {
         return filters;
     }
 
-    public void setFilters(FilterInput filters) {
+    public void setFilters(final FilterInput filters) {
         this.filters = filters;
     }
 
@@ -71,7 +71,7 @@ public class ActionInput {
         return count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(final Integer count) {
         this.count = count;
     }
 
@@ -79,22 +79,22 @@ public class ActionInput {
         return rate;
     }
 
-    public void setRate(Integer rate) {
+    public void setRate(final Integer rate) {
         this.rate = rate;
     }
 
     @Override
     public String toString() {
-        return "ActionInput{" +
-                "type='" + type + '\'' +
-                ", page='" + page + '\'' +
-                ", movie='" + movie + '\'' +
-                ", feature='" + feature + '\'' +
-                ", credentials=" + credentials +
-                ", startsWith='" + startsWith + '\'' +
-                ", filters=" + filters +
-                ", count=" + count +
-                ", rate=" + rate +
-                '}';
+        return "ActionInput{"
+                + "type='" + type + '\''
+                + ", page='" + page + '\''
+                + ", movie='" + movie + '\''
+                + ", feature='" + feature + '\''
+                + ", credentials=" + credentials
+                + ", startsWith='" + startsWith + '\''
+                + ", filters=" + filters
+                + ", count=" + count
+                + ", rate=" + rate
+                + '}';
     }
 }

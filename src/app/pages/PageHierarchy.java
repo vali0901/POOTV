@@ -1,25 +1,31 @@
 package app.pages;
 
-public class PageHierarchy {
-    private static final Page logout = PageFactory.buildPage("logout");
-    private static final Page movies = PageFactory.buildPage("movies");
-    private static final Page seeDetails = PageFactory.buildPage("see details");
-    private static final Page homepageUnauth = PageFactory.buildPage("homepageUnauth");
-    private static final Page homepageAuth = PageFactory.buildPage("homepageAuth");
-    private static final Page upgrades = PageFactory.buildPage("upgrades");
-    private static final Page login = PageFactory.buildPage("login");
-    private static final Page register = PageFactory.buildPage("register");
+public final class PageHierarchy {
+    private PageHierarchy() { }
+    private static final Page LOGOUT = PageFactory.buildPage("logout");
+    private static final Page MOVIES = PageFactory.buildPage("movies");
+    private static final Page SEE_DETAILS = PageFactory.buildPage("see details");
+    private static final Page HOMEPAGE_UNAUTH = PageFactory.buildPage("homepageUnauth");
+    private static final Page HOMEPAGE_AUTH = PageFactory.buildPage("homepageAuth");
+    private static final Page UPGRADES = PageFactory.buildPage("upgrades");
+    private static final Page LOGIN = PageFactory.buildPage("login");
+    private static final Page REGISTER = PageFactory.buildPage("register");
 
-    public static Page getPage(String name) {
+    /**
+     *
+     * @param name The name of the page that is needed
+     * @return The page corresponding to the given page name
+     */
+    public static Page getPage(final String name) {
         return switch (name) {
-            case "login" -> login;
-            case "logout" -> logout;
-            case "register" -> register;
-            case "movies" -> movies;
-            case "upgrades" -> upgrades;
-            case "see details" -> seeDetails;
-            case "homepageAuth" -> homepageAuth;
-            case "homepageUnauth" -> homepageUnauth;
+            case "login" -> LOGIN;
+            case "logout" -> LOGOUT;
+            case "register" -> REGISTER;
+            case "movies" -> MOVIES;
+            case "upgrades" -> UPGRADES;
+            case "see details" -> SEE_DETAILS;
+            case "homepageAuth" -> HOMEPAGE_AUTH;
+            case "homepageUnauth" -> HOMEPAGE_UNAUTH;
             default -> null;
         };
     }
