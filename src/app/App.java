@@ -29,7 +29,8 @@ public final class App {
     }
 
     /**
-     * Updates the available movies, choosing from the Database only the movies available in the current user's country
+     * Updates the available movies, choosing from the Database only the movies
+     * available in the current user's country
      */
     public void updateAvailableMovies() {
         availableMovies = new ArrayList<>();
@@ -44,7 +45,8 @@ public final class App {
     }
 
     /**
-     * Updates the available movies, choosing from the Database only the movies available in the current user's country and starts with the given string
+     * Updates the available movies, choosing from the Database only the movies
+     * available in the current user's country and starts with the given string
      * @param searchString The string used for searching movies
      */
     public void updateAvailableMovies(final String searchString) {
@@ -64,7 +66,9 @@ public final class App {
     }
 
     /**
-     * Updates the available movies, choosing from the Database only the movies available in the current user's country and are corresponding to the given filter
+     * Updates the available movies, choosing from the Database only the movies
+     * available in the current user's country and are corresponding to the
+     * given filter
      * @param filterInput The filter for choosing the movies
      */
     public void updateAvailableMovies(final FilterInput filterInput) {

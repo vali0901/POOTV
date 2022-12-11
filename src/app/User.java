@@ -76,7 +76,8 @@ public final class User {
     }
 
     /**
-     * The user is purchasing a movie, this method being called only when the current page is 'See_Details'
+     * The user is purchasing a movie, this method being called only when the
+     * current page is 'See_Details'
      * @return True if the purchase of a movie was completed, False otherwise
      */
     public boolean purchaseMovie() {
@@ -102,8 +103,10 @@ public final class User {
     }
 
     /**
-     * User is watching a movie, this method must be called only when the current page is 'See_Details'
-     * @return True if the movie was previously purchased and the action is completed, false otherwise
+     * User is watching a movie, this method must be called only when the
+     * current page is 'See_Details'
+     * @return True if the movie was previously purchased and the action is
+     * completed, false otherwise
      */
     public boolean watchMovie() {
         if (!purchasedMovies.contains(App.getApp().getAvailableMovies().get(0))) {
@@ -116,8 +119,10 @@ public final class User {
     }
 
     /**
-     * User is watching a movie, this method must be called only when the current page is 'See_Details'
-     * @return True if the movie was previously watched and the action is completed, false otherwise
+     * User is watching a movie, this method must be called only when the
+     * current page is 'See_Details'
+     * @return True if the movie was previously watched and the action is
+     * completed, false otherwise
      */
     public boolean likeMovie() {
         if (!watchedMovies.contains(App.getApp().getAvailableMovies().get(0))) {
@@ -131,8 +136,10 @@ public final class User {
     }
 
     /**
-     * User is watching a movie, this method must be called only when the current page is 'See_Details'
-     * @return True if the movie was previously watched and the action is completed, false otherwise
+     * User is watching a movie, this method must be called only when the
+     * current page is 'See_Details'
+     * @return True if the movie was previously watched and the action is
+     * completed, false otherwise
      */
     public boolean rateMovie(final float rate) {
         if (rate < 1 || rate > 5) {

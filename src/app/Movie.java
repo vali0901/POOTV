@@ -45,10 +45,17 @@ public final class Movie {
         return true;
     }
 
+    /**
+     * This movie gets a like (increments the numbor of likes)
+     */
     public void getLike() {
         this.numLikes++;
     }
 
+    /**
+     * This movie gets a rate from a user
+     * @param rate The rate this movie gets
+     */
     public void getRate(float rate) {
         this.rating += rate;
         this.numRatings++;
