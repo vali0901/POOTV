@@ -13,7 +13,21 @@ public final class Database {
     public static final  Database DATABASE = new Database();
     private ArrayList<User> users;
     private ArrayList<Movie> movies;
-    private Database() { }
+    private int movieListChanged;
+
+    private final ArrayList<DatabaseObserver> observers  = new ArrayList<>(2);
+    private Database() {
+        observers.add(new AddingNotifier());
+        observers.add(new DeletingNotifier());
+    }
+
+    public int movieListHasChanged() {
+        return movieListChanged;
+    }
+
+    public void resetChangesCount() {
+        movieListChanged = 0;
+    }
 
     public static Database getDatabase() {
         return DATABASE;
@@ -96,5 +110,40 @@ public final class Database {
             }
         }
         return null;
+    }
+
+    public boolean addMovie(Movie addedMovie) {
+        for(Movie movie : movies)
+            if(movie.getName().equals(addedMovie.getName()))
+                return false;
+
+        movies.add(addedMovie);
+
+        movieListChanged = 1;
+
+        for(DatabaseObserver observer : observers) {
+            observer.update(addedMovie);
+        }
+
+        return true;
+    }
+
+    public boolean deleteMovie(String deletedMovie) {
+        Movie helper = null;
+
+        for(int i = 0; i < movies.size(); i++)
+            if(movies.get(i).getName().equals(deletedMovie)){
+                helper = movies.remove(i);
+            }
+        if(helper == null)
+            return false;
+
+        movieListChanged = -1;
+
+        for(DatabaseObserver observer : observers) {
+            observer.update(helper);
+        }
+
+        return true;
     }
 }
