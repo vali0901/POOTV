@@ -92,17 +92,17 @@ public final class App {
         helper.sort((o1, o2) -> {
             if (filterInput.getSort().getDuration() == null) {
                 if (filterInput.getSort().getRating().equals("decreasing")) {
-                    return (int) ((o2.calculateRating() - o1.calculateRating()));
+                    return (int) ((o2.getRating() - o1.getRating()) * 100);
                 } else {
-                    return (int) ((o1.calculateRating() - o2.calculateRating()));
+                    return (int) ((o1.getRating() - o2.getRating()) * 100);
                 }
             }
 
             if (o1.getDuration() - o2.getDuration() == 0) {
                 if (filterInput.getSort().getRating().equals("decreasing")) {
-                    return (int) ((o2.calculateRating() - o1.calculateRating()));
+                    return (int) ((o2.getRating() - o1.getRating()) * 100);
                 } else {
-                    return (int) ((o1.calculateRating() - o2.calculateRating()));
+                    return (int) ((o1.getRating() - o2.getRating()) * 100);
                 }
             }
 
@@ -140,7 +140,7 @@ public final class App {
         return availableMovies;
     }
 
-    public void setAvailableMovies(ArrayList<Movie> availableMovies) {
+    public void setAvailableMovies(final ArrayList<Movie> availableMovies) {
         this.availableMovies = availableMovies;
     }
 }

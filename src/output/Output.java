@@ -1,45 +1,15 @@
 package output;
 
-import app.App;
 import app.Movie;
 import app.Notification;
 import app.User;
 import input.Credentials;
-
 import java.util.ArrayList;
 
-public class Output {
-    private String error;
-    private ArrayList<MovieOutput> currentMoviesList;
-    private UserOutput currentUser;
-
-    public Output() {
-
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(final String error) {
-        this.error = error;
-    }
-
-    public ArrayList<MovieOutput> getCurrentMoviesList() {
-        return currentMoviesList;
-    }
-
-    public void setCurrentMoviesList(final ArrayList<MovieOutput> currentMoviesList) {
-        this.currentMoviesList = currentMoviesList;
-    }
-
-    public UserOutput getCurrentUser() {
-        return currentUser;
-    }
-
-    public void setCurrentUser(final UserOutput currentUser) {
-        this.currentUser = currentUser;
-    }
+public abstract class Output {
+    protected String error;
+    protected ArrayList<MovieOutput> currentMoviesList;
+    protected UserOutput currentUser;
 }
 
 
@@ -54,7 +24,7 @@ final class MovieOutput {
     private Float rating;
     private Integer numRatings;
 
-    public MovieOutput(final Movie movie) {
+    MovieOutput(final Movie movie) {
         this.name = movie.getName();
         this.year = movie.getYear().toString();
         this.duration = movie.getDuration();
@@ -70,7 +40,7 @@ final class MovieOutput {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -78,7 +48,7 @@ final class MovieOutput {
         return year;
     }
 
-    public void setYear(String year) {
+    public void setYear(final String year) {
         this.year = year;
     }
 
@@ -86,7 +56,7 @@ final class MovieOutput {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(final Integer duration) {
         this.duration = duration;
     }
 
@@ -94,7 +64,7 @@ final class MovieOutput {
         return genres;
     }
 
-    public void setGenres(ArrayList<String> genres) {
+    public void setGenres(final ArrayList<String> genres) {
         this.genres = genres;
     }
 
@@ -102,7 +72,7 @@ final class MovieOutput {
         return actors;
     }
 
-    public void setActors(ArrayList<String> actors) {
+    public void setActors(final ArrayList<String> actors) {
         this.actors = actors;
     }
 
@@ -110,7 +80,7 @@ final class MovieOutput {
         return countriesBanned;
     }
 
-    public void setCountriesBanned(ArrayList<String> countriesBanned) {
+    public void setCountriesBanned(final ArrayList<String> countriesBanned) {
         this.countriesBanned = countriesBanned;
     }
 
@@ -118,7 +88,7 @@ final class MovieOutput {
         return numLikes;
     }
 
-    public void setNumLikes(Integer numLikes) {
+    public void setNumLikes(final Integer numLikes) {
         this.numLikes = numLikes;
     }
 
@@ -126,7 +96,7 @@ final class MovieOutput {
         return rating;
     }
 
-    public void setRating(Float rating) {
+    public void setRating(final Float rating) {
         this.rating = rating;
     }
 
@@ -134,7 +104,7 @@ final class MovieOutput {
         return numRatings;
     }
 
-    public void setNumRatings(Integer numRatings) {
+    public void setNumRatings(final Integer numRatings) {
         this.numRatings = numRatings;
     }
 }
@@ -216,7 +186,7 @@ final class  UserOutput {
         return purchasedMovies;
     }
 
-    public void setPurchasedMovies(ArrayList<MovieOutput> purchasedMovies) {
+    public void setPurchasedMovies(final ArrayList<MovieOutput> purchasedMovies) {
         this.purchasedMovies = purchasedMovies;
     }
 
@@ -224,7 +194,7 @@ final class  UserOutput {
         return watchedMovies;
     }
 
-    public void setWatchedMovies(ArrayList<MovieOutput> watchedMovies) {
+    public void setWatchedMovies(final ArrayList<MovieOutput> watchedMovies) {
         this.watchedMovies = watchedMovies;
     }
 
@@ -232,7 +202,7 @@ final class  UserOutput {
         return likedMovies;
     }
 
-    public void setLikedMovies(ArrayList<MovieOutput> likedMovies) {
+    public void setLikedMovies(final ArrayList<MovieOutput> likedMovies) {
         this.likedMovies = likedMovies;
     }
 
@@ -240,7 +210,7 @@ final class  UserOutput {
         return ratedMovies;
     }
 
-    public void setRatedMovies(ArrayList<MovieOutput> ratedMovies) {
+    public void setRatedMovies(final ArrayList<MovieOutput> ratedMovies) {
         this.ratedMovies = ratedMovies;
     }
 
@@ -248,7 +218,7 @@ final class  UserOutput {
         return notifications;
     }
 
-    public void setNotifications(ArrayList<Notification> notifications) {
+    public void setNotifications(final ArrayList<Notification> notifications) {
         this.notifications = notifications;
     }
 }

@@ -13,6 +13,9 @@ public final class User {
     private ArrayList<Movie> watchedMovies;
     private ArrayList<Movie> likedMovies;
     private ArrayList<Movie> ratedMovies;
+    private ArrayList<Notification> notifications;
+    private ArrayList<String> genres;
+
 
     public User(final UserInput userInput) {
         this.credentials = userInput.getCredentials();
@@ -22,6 +25,8 @@ public final class User {
         this.watchedMovies = new ArrayList<>();
         this.likedMovies = new ArrayList<>();
         this.ratedMovies = new ArrayList<>();
+        this.notifications = new ArrayList<>();
+        this.genres = new ArrayList<>();
     }
 
     public User(final User user) {
@@ -32,6 +37,8 @@ public final class User {
         this.watchedMovies = new ArrayList<>(user.getWatchedMovies());
         this.likedMovies = new ArrayList<>(user.getLikedMovies());
         this.ratedMovies = new ArrayList<>(user.getRatedMovies());
+        this.notifications = new ArrayList<>(user.getNotifications());
+        this.genres = new ArrayList<>(user.getGenres());
     }
 
     public User(final Credentials credentials) {
@@ -42,6 +49,8 @@ public final class User {
         this.watchedMovies = new ArrayList<>();
         this.likedMovies = new ArrayList<>();
         this.ratedMovies = new ArrayList<>();
+        this.notifications = new ArrayList<>();
+        this.genres = new ArrayList<>();
     }
 
     /**
@@ -62,7 +71,8 @@ public final class User {
 
     /**
      *
-     * @return True if user has enough balance to buy premium account and the action is completed, false otherwise
+     * @return True if user has enough balance to buy premium account and the
+     * action is completed, false otherwise
      */
     public boolean buyPremium() {
         if (tokensCount < 10) {
@@ -81,6 +91,10 @@ public final class User {
      * @return True if the purchase of a movie was completed, False otherwise
      */
     public boolean purchaseMovie() {
+        if (purchasedMovies.contains(App.getApp().getAvailableMovies().get(0))) {
+            return false;
+        }
+
         if (credentials.getAccountType().equals("standard")) {
             if (tokensCount < 2) {
                 return false;
@@ -93,6 +107,7 @@ public final class User {
         }
 
         purchasedMovies.add(App.getApp().getAvailableMovies().get(0));
+
         if (numFreePremiumMovies > 0) {
             numFreePremiumMovies--;
         } else {
@@ -113,7 +128,11 @@ public final class User {
             return false;
         }
 
-        watchedMovies.add(App.getApp().getAvailableMovies().get(0));
+        if (!watchedMovies.contains(App.getApp().getAvailableMovies().get(0))) {
+            watchedMovies.add(App.getApp().getAvailableMovies().get(0));
+        }
+
+        App.getApp().getAvailableMovies().get(0).gotWatchedBy(this.credentials.getName());
 
         return true;
     }
@@ -128,8 +147,9 @@ public final class User {
         if (!watchedMovies.contains(App.getApp().getAvailableMovies().get(0))) {
             return false;
         }
-
-        likedMovies.add(App.getApp().getAvailableMovies().get(0));
+        if (!likedMovies.contains(App.getApp().getAvailableMovies().get(0))) {
+            likedMovies.add(App.getApp().getAvailableMovies().get(0));
+        }
 
         App.getApp().getAvailableMovies().get(0).getLike();
         return true;
@@ -150,11 +170,54 @@ public final class User {
             return false;
         }
 
-        ratedMovies.add(App.getApp().getAvailableMovies().get(0));
+        if (!ratedMovies.contains(App.getApp().getAvailableMovies().get(0))) {
+            ratedMovies.add(App.getApp().getAvailableMovies().get(0));
+        }
 
-        App.getApp().getAvailableMovies().get(0).getRate(rate);
+        App.getApp().getAvailableMovies().get(0).getRate(rate, this.credentials.getName());
 
         return true;
+    }
+
+    /**
+     *
+     * @param genre The genre that this user is subscribing for
+     */
+    public void subscribe(final String genre) {
+        this.genres.add(genre);
+    }
+
+    /**
+     * Checks if this user is subscribed to one of the given list containing genres
+     * @param genresList A list of genres (generally a movie's genres list)
+     * @return True if this user is subscribed to at least one genre, false otherwise
+     */
+    public boolean isSubscribed(final ArrayList<String> genresList) {
+        for (String genre : genresList) {
+            if (this.genres.contains(genre)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * This user gets a refund, getting its 'money' back
+     * This method is called when a movie is deleted from the database
+     * @param movie The movie that has been deleted
+     */
+    public void getRefund(final Movie movie) {
+        purchasedMovies.remove(movie);
+        watchedMovies.remove(movie);
+        likedMovies.remove(movie);
+        ratedMovies.remove(movie);
+
+        if (this.credentials.getAccountType().equals("premium")) {
+            numFreePremiumMovies++;
+        } else {
+            tokensCount += 2;
+        }
     }
 
     public Credentials getCredentials() {
@@ -211,5 +274,21 @@ public final class User {
 
     public void setRatedMovies(final ArrayList<Movie> ratedMovies) {
         this.ratedMovies = ratedMovies;
+    }
+
+    public ArrayList<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(final ArrayList<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public ArrayList<String> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(final ArrayList<String> genres) {
+        this.genres = genres;
     }
 }

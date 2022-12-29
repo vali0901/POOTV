@@ -1,25 +1,27 @@
 package app;
 
-import org.w3c.dom.Node;
-
-public class Notification {
+public final class Notification {
     private String movieName;
     private String message;
-    public static class Builder {
-        private String movieName;
-        private String message;
-        public Builder (final String movieName, final String message) {
+    public static final class Builder {
+        private final String movieName;
+        private final String message;
+        public Builder(final String movieName, final String message) {
             this.message = message;
             this.movieName = movieName;
         }
 
+        /**
+         *
+         * @return A Notification object containing this Builder's attributes
+         */
         public Notification build() {
             return new Notification(this);
         }
 
     }
 
-    private Notification(Builder builder) {
+    private Notification(final Builder builder) {
         this.message = builder.message;
         this.movieName = builder.movieName;
     }
@@ -28,7 +30,7 @@ public class Notification {
         return movieName;
     }
 
-    public void setMovieName(String movieName) {
+    public void setMovieName(final String movieName) {
         this.movieName = movieName;
     }
 
@@ -36,7 +38,7 @@ public class Notification {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(final String message) {
         this.message = message;
     }
 }

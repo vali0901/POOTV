@@ -1,6 +1,7 @@
 import app.App;
 import app.actions.ActionMaker;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import input.Input;
 import java.io.File;
@@ -24,7 +25,7 @@ public final class Main {
         App.getApp().start(inputData);
         ActionMaker.action(inputData, output);
 
-        objectMapper.writerWithDefaultPrettyPrinter();
-        objectMapper.writeValue(new File(args[1]), output);
+        ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
+        objectWriter.writeValue(new File(args[1]), output);
     }
 }

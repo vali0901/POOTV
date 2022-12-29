@@ -4,6 +4,8 @@ import input.ContainsInput;
 import input.MovieInput;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 public final class Movie {
     private String name;
@@ -13,8 +15,10 @@ public final class Movie {
     private ArrayList<String> actors;
     private ArrayList<String> countriesBanned;
     private Integer numLikes;
-    private Double rating;
+    private Float rating;
     private Integer numRatings;
+    private HashMap<String, Integer> watchedBy;
+    private HashMap<String, Float> ratedBy;
 
     /**
      *
@@ -46,7 +50,7 @@ public final class Movie {
     }
 
     /**
-     * This movie gets a like (increments the numbor of likes)
+     * This movie gets a like (increments the number of likes)
      */
     public void getLike() {
         this.numLikes++;
@@ -54,11 +58,32 @@ public final class Movie {
 
     /**
      * This movie gets a rate from a user
+     * Updates or create an entry into the 'ratedBy' hashmap and then updates
+     * this movie's rating
      * @param rate The rate this movie gets
+     * @param username The name of the user that rated this movie
      */
-    public void getRate(float rate) {
-        this.rating += rate;
-        this.numRatings++;
+    public void getRate(final float rate, final String username) {
+        if (!ratedBy.containsKey(username)) {
+            ratedBy.put(username, rate);
+            numRatings++;
+        } else {
+            ratedBy.put(username, rate);
+        }
+
+        rating = calculateRating();
+    }
+
+    /**
+     * Updates or creates an entry into the 'watchedBy' hashmap
+     * @param username The name of the user that watched this movie
+     */
+    public void gotWatchedBy(final String username) {
+        if (!watchedBy.containsKey(username)) {
+            watchedBy.put(username, 1);
+        } else {
+            watchedBy.put(username, watchedBy.get(username) + 1);
+        }
     }
 
     public Movie(final MovieInput movieInput) {
@@ -69,8 +94,10 @@ public final class Movie {
         this.actors = movieInput.getActors();
         this.countriesBanned = movieInput.getCountriesBanned();
         this.numLikes = 0;
-        this.rating = 0.0;
+        this.rating = 0.00F;
         this.numRatings = 0;
+        watchedBy = new HashMap<>();
+        ratedBy = new HashMap<>();
     }
 
     public Movie(final Movie movie) {
@@ -87,10 +114,16 @@ public final class Movie {
 
     /**
      *
-     * @return Rating of this movie as a double
+     * @return Rating of this movie as a float
      */
-    public Double calculateRating() {
-        return numRatings == 0 ? 0 : rating / numRatings;
+    public float calculateRating() {
+        Collection<Float> ratings =  ratedBy.values();
+        float sum = 0;
+        for (Float rate : ratings) {
+            sum += rate;
+        }
+
+        return numRatings == 0 ? 0 : sum / numRatings;
     }
 
     public String getName() {
@@ -149,11 +182,11 @@ public final class Movie {
         this.numLikes = numLikes;
     }
 
-    public Double getRating() {
+    public Float getRating() {
         return rating;
     }
 
-    public void setRating(final Double rating) {
+    public void setRating(final Float rating) {
         this.rating = rating;
     }
 
@@ -163,5 +196,21 @@ public final class Movie {
 
     public void setNumRatings(final Integer numRatings) {
         this.numRatings = numRatings;
+    }
+
+    public HashMap<String, Integer> getWatchedBy() {
+        return watchedBy;
+    }
+
+    public void setWatchedBy(final HashMap<String, Integer> watchedBy) {
+        this.watchedBy = watchedBy;
+    }
+
+    public HashMap<String, Float> getRatedBy() {
+        return ratedBy;
+    }
+
+    public void setRatedBy(final HashMap<String, Float> ratedBy) {
+        this.ratedBy = ratedBy;
     }
 }

@@ -7,7 +7,9 @@ public final class Page {
     private ArrayList<String> children;
     private ArrayList<String> availableActions;
 
-    Page(final String name, final ArrayList<String> children, final ArrayList<String> availableActions) {
+    Page(final String name,
+         final ArrayList<String> children,
+         final ArrayList<String> availableActions) {
         this.name = name;
         this.children = children;
         this.availableActions = availableActions;

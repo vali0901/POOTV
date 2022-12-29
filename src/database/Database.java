@@ -21,15 +21,7 @@ public final class Database {
         observers.add(new DeletingNotifier());
     }
 
-    public int movieListHasChanged() {
-        return movieListChanged;
-    }
-
-    public void resetChangesCount() {
-        movieListChanged = 0;
-    }
-
-    public static Database getDatabase() {
+     public static Database getDatabase() {
         return DATABASE;
     }
 
@@ -112,38 +104,75 @@ public final class Database {
         return null;
     }
 
-    public boolean addMovie(Movie addedMovie) {
-        for(Movie movie : movies)
-            if(movie.getName().equals(addedMovie.getName()))
+    /**
+     * Adds a new movie to the database, then notifies all the observers
+     * @param addedMovie The movie added to the database
+     * @return True if this operation is completed successfully, false otherwise
+     * (movie name already exists)
+     */
+    public boolean addMovie(final Movie addedMovie) {
+        for (Movie movie : movies) {
+            if (movie.getName().equals(addedMovie.getName())) {
                 return false;
+            }
+        }
 
         movies.add(addedMovie);
 
         movieListChanged = 1;
 
-        for(DatabaseObserver observer : observers) {
-            observer.update(addedMovie);
-        }
+        notifyObservers(addedMovie);
 
         return true;
     }
 
-    public boolean deleteMovie(String deletedMovie) {
+    /**
+     * Deletes a movie from the database, the notifies all the observers
+     * @param deletedMovie The movie that is being deleted
+     * @return True if success, false otherwise (movie does not exist)
+     */
+    public boolean deleteMovie(final String deletedMovie) {
         Movie helper = null;
 
-        for(int i = 0; i < movies.size(); i++)
-            if(movies.get(i).getName().equals(deletedMovie)){
+        for (int i = 0; i < movies.size(); i++) {
+            if (movies.get(i).getName().equals(deletedMovie)) {
                 helper = movies.remove(i);
+                break;
             }
-        if(helper == null)
+        }
+
+        if (helper == null) {
             return false;
+        }
 
         movieListChanged = -1;
 
-        for(DatabaseObserver observer : observers) {
-            observer.update(helper);
-        }
+        notifyObservers(helper);
 
         return true;
+    }
+
+    /**
+     * Indicates if the movie database has changed (for observers)
+     * @return 1 if a movie has been added,
+     * -1 if a movie has been deleted,
+     * 0 if no changes were made
+     */
+    public int movieListHasChanged() {
+        return movieListChanged;
+    }
+
+    /**
+     * Resets the changes indicator to 0 (method called by the
+     * observers)
+     */
+    public void resetChangesCount() {
+        movieListChanged = 0;
+    }
+
+    private void notifyObservers(final Movie movie) {
+        for (DatabaseObserver observer : observers) {
+            observer.update(movie);
+        }
     }
 }

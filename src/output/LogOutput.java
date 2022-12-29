@@ -5,7 +5,7 @@ import app.Movie;
 
 import java.util.ArrayList;
 
-public class LogOutput extends Output{
+public final class LogOutput extends Output {
     public LogOutput() {
         setError(null);
         if (App.getApp().getAvailableMovies() != null) {
@@ -20,4 +20,29 @@ public class LogOutput extends Output{
 
         this.setCurrentUser(new UserOutput(App.getApp().getCurrUser()));
     }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(final String error) {
+        this.error = error;
+    }
+
+    public ArrayList<MovieOutput> getCurrentMoviesList() {
+        return currentMoviesList;
+    }
+
+    public void setCurrentMoviesList(final ArrayList<MovieOutput> currentMoviesList) {
+        this.currentMoviesList = currentMoviesList;
+    }
+
+    public UserOutput getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(final UserOutput currentUser) {
+        this.currentUser = currentUser;
+    }
+
 }
