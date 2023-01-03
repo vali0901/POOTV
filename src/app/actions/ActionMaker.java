@@ -21,8 +21,8 @@ import java.util.Collections;
 public final class ActionMaker {
     private ActionMaker() { }
 
-    private static Stack<Page> pageStack = new Stack<>();
-    private static Stack<ArrayList<Movie>> moviesStack = new Stack<>();
+    private static Stack<Page> pageStack;
+    private static Stack<ArrayList<Movie>> moviesStack;
 
     /**
      * The method that manages all the actions, responsible for calling all
@@ -31,6 +31,10 @@ public final class ActionMaker {
      * @param output The array node where all the output objects will be stored
      */
     public static void action(final Input input, final ArrayNode output) {
+        // init stacks
+        pageStack = new Stack();
+        moviesStack = new Stack<>();
+
         for (ActionInput actionInput : input.getActions()) {
             switch (actionInput.getType()) {
                 case "on page" -> {
@@ -42,10 +46,7 @@ public final class ActionMaker {
                             || actionInput.getFeature().equals("purchase")
                             || actionInput.getFeature().equals("like")
                             || actionInput.getFeature().equals("rate")
-                            || (actionInput.getFeature().equals("watch")
-                                && App.getApp().getAvailableMovies().get(0)
-                                .getWatchedBy().get(App.getApp().getCurrUser()
-                                    .getCredentials().getName()) < 2))) {
+                            || actionInput.getFeature().equals("watch"))) {
                         output.addPOJO(OutputFactory.createOutput("log"));
                     } else if (!success) {
                         output.addPOJO(OutputFactory.createOutput("error"));
@@ -80,13 +81,7 @@ public final class ActionMaker {
                         output.addPOJO(OutputFactory.createOutput("error"));
                     }
                 }
-                case "subscribe" -> {
-                    boolean success = subscribe(actionInput);
 
-                    if (!success) {
-                        output.addPOJO(OutputFactory.createOutput("error"));
-                    }
-                }
                 case "database" -> {
                     Movie addedMovie;
                     boolean success;
@@ -120,7 +115,6 @@ public final class ActionMaker {
         if (App.getApp().getCurrUser() != null
                 && App.getApp().getCurrUser().getCredentials().getAccountType().equals("premium")) {
             sendRecommendation(output);
-
         }
     }
 
@@ -178,6 +172,9 @@ public final class ActionMaker {
             }
             case "rate" -> {
                 return App.getApp().getCurrUser().rateMovie(actionInput.getRate());
+            }
+            case "subscribe" -> {
+               return subscribe(actionInput);
             }
             default -> {
                 return false;

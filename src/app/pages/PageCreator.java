@@ -47,11 +47,12 @@ public final class PageCreator {
                 children.add("upgrades");
                 children.add("logout");
                 children.add("see details");
-                actions = new ArrayList<>(4);
+                actions = new ArrayList<>(5);
                 actions.add("purchase");
                 actions.add("watch");
                 actions.add("like");
                 actions.add("rate");
+                actions.add("subscribe");
                 return new Page(name, children, actions);
             }
             case "upgrades" -> {
