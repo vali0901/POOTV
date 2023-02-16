@@ -2,7 +2,7 @@
 This is a project in which I've used various OOP concepts
 and design patterns. POO TV simulates a video streaming
 platform (like Netflix), in which a user is navigating
-through pages, and, depending on a page, can do some
+through pages, and, depending on the page, can do some
 actions (log in, watch a movie, subscribe to a genre).
 
 ### Implementation
